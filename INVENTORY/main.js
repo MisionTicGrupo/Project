@@ -24,6 +24,7 @@ $(".btnEditar").click(function (){
 
 /* Definición de variables */
 const btnNuevo = document.getElementById("btnNuevo")
+const btnGuardar = document.getElementById("btnGuardar")
 const form = document.querySelector("form")
 let table = document.querySelector("tbody")
 const modal = document.querySelector("#modal1")
@@ -61,8 +62,32 @@ imagen.addEventListener('change', function(){
 /* Función Submit */
 form.addEventListener("submit", function(e){
     e.preventDefault()
-    onFormSubmit()
     
+    if(producto.value === ""){
+    document.querySelector("#alertDiv").innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Nombre del producto</strong> es un campo requerido.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`
+    }else if(precio.value === ""){
+        document.querySelector("#alertDiv").innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>El precio del producto</strong> es un campo requerido.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`
+    }else if(stock.value === ""){
+        document.querySelector("#alertDiv").innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>El stock del producto</strong> es un campo requerido.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`
+        }else if(stock.value === 0){
+        document.querySelector("#alertDiv").innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>El stock del producto</strong> no puede ser cero.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`
+    }else{
+        btnGuardar.innerHTML = `<button type="submit" id="btnGuardar" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>`
+        onFormSubmit()
+    }
+        
 })
 
 function onFormSubmit(){
@@ -74,6 +99,7 @@ function onFormSubmit(){
     
 resetForm()
 alert("Registro exitoso")
+$("#modal1").modal('hide');
 }
 
 function formDataRead(){
