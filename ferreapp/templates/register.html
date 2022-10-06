@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+<style>
+    body{
+        background-color: #939FAE; 
+        background-image:  radial-gradient(#00416A 0.5px, transparent 0.5px), radial-gradient(#00416A 0.5px, #939FAE 0.5px);
+        background-size: 20px 20px;
+        background-position: 0 0,10px 10px;
+    }
+
+    .bg {
+        background-image:url({% static 'login-image.jpg' %});
+        background-position: center center;
+        background-size: cover
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+
+<div class="container w-75 bg-primary mt-5 rounded shadow">
+    <div class="row align-items-stretch">
+        <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded">
+        
+        </div>
+        <div class="col bg-white p-5 rounded-end"> 
+           <h2 class="fw-bold text-center py-5">Registro</h2>
+            <!-- LOGIN   -->
+            <form method="POST">
+                {% csrf_token %}
+                {{ error }}
+                <div class="mb-4">
+                    <label for="usuario"class="form-label"> Usuario</label>
+                    <input type="text" name="username" id="usuario" class="form-control" >
+                </div>
+                <div class="mb-4">
+                    <label for="contraseña"class="form-label"> Contraseña</label>
+                    <input type="password" name="password1" id="contraseña" class="form-control" >
+                </div>
+                <div class="mb-4">
+                    <label for="contraseña"class="form-label"> Confirmar Contraseña</label>
+                    <input type="password" name="password2" id="contraseña" class="form-control" >
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">CREAR</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

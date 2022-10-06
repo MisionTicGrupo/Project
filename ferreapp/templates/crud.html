@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+<style>
+
+  #photo{
+    width: 300px;
+    height: 300px;
+  }
+  
+  .ex{
+    width: 100px;
+    height: 100px;
+  }
+
+  table{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  }
+
+</style>
+{% endblock style %}
+
+{% block content %}
+<br/>
+<img src="{% static 'crud.png' %}" class="rounded mx-auto d-block" width="250"/>
+    
+  <div class="container mb-2 sticky-top">
+    <div class="row">
+      <div class="col-lg-13">
+        <button id="btnNuevo" type="button" class="btn btn-success"> <i class="bi bi-plus-circle"></i> Nuevo</button>
+      </div>
+    </div>
+  </div>
+
+    <table id="tinventario" class="table table-striped" style="width:100%">
+      <thead>
+        <tr class = "sticky-top bg-light" >
+          <th class = "text-center">ID</th>
+          <th class = "text-center">Producto</th>
+          <th class = "text-center">Descripción</th>
+          <th class = "text-center">Precio</th>
+          <th class = "text-center">Stock</th>
+          <th class = "text-center">Acciones</th>
+          <th class = "text-center">Imagen</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for producto in productos %}
+        <tr>
+          <td id="idValue">{{ producto.id }}</td>
+          <td>{{ producto.nombre }}</td>
+          <td>{{ producto.descripcion }}</td>
+          <td>{{ producto.precio }}</td>
+          <td>{{ producto.stock }}</td>
+          <td>
+            <div class="text-center">
+              <div class="btn-group">
+                <a class="btn btn-primary btnEditar" role="button" id="btnEditar"><i class="bi bi-pencil-square"></i> Editar</a>
+                <a class="btn btn-danger btnBorrar" role="button" id="btnEliminar" href="{% url 'eliminar' producto.id %}"><i class="bi bi-trash3"></i> Borrar</a>
+              </div>
+            </div>
+          </td>
+          <td>
+            <img src="{{ producto.imagen.url }}" height="100"/>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" id="formProductos" autocomplete="off" enctype='multipart/form-data'>    
+              {% csrf_token %}
+                <div class="modal-body">
+                  <div id="alertDiv"></div>
+                  <input type = "hidden" name="idV" value="0"/>
+                  {% for campo in form %}
+
+                    {% if campo.field.widget.input_type == 'file' %}
+                      <br/>
+                      <img src="{% static 'tiny.gif' %}" width="0" alt="" id="viewImage" />
+                    {% endif %}
+
+                    <div class="col-lg-8">
+                      <div class="form-group">
+                        <label for="" class="col-form-label">{{ campo.label }}</label>
+                        <input type="{{ campo.field.widget.input_type }}" class="form-control" name="{{ campo.name }}" placeholder="{{ campo.label }}" value="{{ campo.value | default:'' }}">
+                      </div>
+                    </div>
+                  {% endfor %}
+
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" id="btnGuardar" class="btn btn-primary">Guardar</button>
+                </div> 
+              </div>
+        </form>
+          </div>
+        </div>
+      </div>
+{% endblock %}
